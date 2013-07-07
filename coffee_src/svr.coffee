@@ -20,6 +20,7 @@ launchServer = ->
 	svr = connect()
 		.use(connect.static(svrConfig.rootDir))
 		.use(connect.urlencoded())
+		.use(connect.methodOverride())
 		.use('/data', data.connectHandler)
 	svr.listen(svrConfig.port, svrConfig.host)
 	console.log("Server running at http://#{svrConfig.host}:#{svrConfig.port}/")
