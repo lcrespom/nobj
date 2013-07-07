@@ -1,0 +1,4 @@
+REST DB layer
+- Proper error handling
+- Limits by configuration (e.g. max number of results to return etc.)
+- Access control: allow operations depending on user identity
