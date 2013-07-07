@@ -34,15 +34,16 @@
     }
     collection = db.collection(collName);
     console.log("Collection: " + collection.collectionName);
+    console.log('Body:', req.body);
     switch (req.method) {
       case 'GET':
         return doGet(req, res, next, collection, parsedUrl, oid);
       case 'POST':
-        return doPost(req, res, next, collection, parsedUrl, oid);
+        return doPost(req, res, next, collection);
       case 'PUT':
-        return doPut(req, res, next, collection, parsedUrl, oid);
+        return doPut(req, res, next, collection);
       case 'DELETE':
-        return doDelete(req, res, next, collection, parsedUrl, oid);
+        return doDelete(req, res, next, collection);
       default:
         return next("Method '" + req.method + "' not supported");
     }
@@ -77,16 +78,32 @@
     }
   };
 
-  doPost = function(req, res, collection, parsedUrl, oid) {
-    throw 'POST not yet supported';
+  doPost = function(req, res, next, collection) {
+    return collection.insert(req.body, {
+      w: 1
+    }, function(err, result) {
+      return respondJson(res, {
+        err: err,
+        result: result
+      });
+    });
   };
 
-  doPut = function(req, res, collection, parsedUrl, oid) {
+  doPut = function(req, res, next, collection) {
     throw 'PUT not yet supported';
   };
 
-  doDelete = function(req, res, collection, parsedUrl, oid) {
-    throw 'DELETE not yet supported';
+  doDelete = function(req, res, next, collection) {
+    return collection.remove({
+      _id: ObjectID(req.body._id)
+    }, {
+      w: 1
+    }, function(err, numRemoved) {
+      return respondJson(res, {
+        err: err,
+        result: numRemoved
+      });
+    });
   };
 
   respondJson = function(res, obj) {

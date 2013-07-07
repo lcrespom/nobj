@@ -2,16 +2,35 @@
 <html>
 	<head>
 		<title>Welcome</title>
+		<script src="jquery.js"></script>
 	</head>
 	<body>
-		<h2>Test: create book</h2>
+		<h2>Test post/put/delete</h2>
 		
 		<form method="post" action="data/books">
-			<input type="hidden" name="_method" value="put" />
+			<input type="hidden" id="fldMethod" name="_method" />
 			<label for="title">Title:</label><input type="text" name="title"><br>
 			<label for="title">Author:</label><input type="text" name="author"><br>
-			<input type="submit">
+			<label for="id">ID:</label><input type="text" name="_id"><br>
+			<button type="submit" id="butPost">Create (post)</button>
+			<button type="submit" id="butPut">Update (put)</button>
+			<button type="submit" id="butDelete">Delete</button>
 		</form>
+
+
+<script>
+	$(function() {
+		function handleButton(butId, method) {
+			$(butId).click(function() {
+				$("#fldMethod").attr("value", method);
+			});
+		}
+		
+		handleButton("#butPost", "post");
+		handleButton("#butPut", "put");
+		handleButton("#butDelete", "delete");
+	});
+</script>
 
 	</body>
 </html>

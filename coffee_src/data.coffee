@@ -27,11 +27,12 @@ dataHandler = (req, res, next) ->
 		return
 	collection = db.collection(collName)
 	console.log("Collection: #{collection.collectionName}")
+	console.log('Body:', req.body)
 	switch req.method
 		when 'GET'		then doGet(req, res, next, collection, parsedUrl, oid)
-		when 'POST'		then doPost(req, res, next, collection, parsedUrl, oid)
-		when 'PUT'		then doPut(req, res, next, collection, parsedUrl, oid)
-		when 'DELETE'	then doDelete(req, res, next, collection, parsedUrl, oid)
+		when 'POST'		then doPost(req, res, next, collection)
+		when 'PUT'		then doPut(req, res, next, collection)
+		when 'DELETE'	then doDelete(req, res, next, collection)
 		else next("Method '#{req.method}' not supported")
 
 doGet = (req, res, next, collection, parsedUrl, oid) ->
@@ -49,17 +50,18 @@ doGet = (req, res, next, collection, parsedUrl, oid) ->
 		collection.find(parsedUrl.query).toArray((err, items) ->
 				respondJson(res, { err: err, items: items }))
 
-doPost = (req, res, collection, parsedUrl, oid) ->
-	#TODO create new entry
-	throw 'POST not yet supported'
+doPost = (req, res, next, collection) ->
+	# Create new entry
+	collection.insert(req.body, w: 1, (err, result) ->
+		respondJson(res, { err: err, result: result }))
 
-doPut = (req, res, collection, parsedUrl, oid) ->
+doPut = (req, res, next, collection) ->
 	#TODO update entry
 	throw 'PUT not yet supported'
 
-doDelete = (req, res, collection, parsedUrl, oid) ->
-	#TODO delete entry
-	throw 'DELETE not yet supported'
+doDelete = (req, res, next, collection) ->
+	collection.remove(_id: ObjectID(req.body._id), {w:1}, (err, numRemoved) ->
+		respondJson(res, { err: err, result: numRemoved }))
 
 respondJson = (res, obj) ->
 	res.writeHead(200, 'Content-Type': 'application/json')
