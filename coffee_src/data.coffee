@@ -57,11 +57,14 @@ doPost = (req, res, next, collection) ->
 		respondJson(res, { err: err, result: result }))
 
 doPut = (req, res, next, collection) ->
-	#TODO update entry
-	throw 'PUT not yet supported'
+	# Update entry
+	oid = req.body._id
+	delete req.body._id
+	collection.update({ _id: ObjectID(oid) }, req.body, { w: 1 }, (err, result) ->
+		respondJson(res, { err: err, result: result }))
 
 doDelete = (req, res, next, collection) ->
-	collection.remove(_id: ObjectID(req.body._id), {w:1}, (err, numRemoved) ->
+	collection.remove({ _id: ObjectID(req.body._id) }, { w: 1 }, (err, numRemoved) ->
 		respondJson(res, { err: err, result: numRemoved }))
 
 respondJson = (res, obj) ->

@@ -91,7 +91,19 @@
   };
 
   doPut = function(req, res, next, collection) {
-    throw 'PUT not yet supported';
+    var oid;
+    oid = req.body._id;
+    delete req.body._id;
+    return collection.update({
+      _id: ObjectID(oid)
+    }, req.body, {
+      w: 1
+    }, function(err, result) {
+      return respondJson(res, {
+        err: err,
+        result: result
+      });
+    });
   };
 
   doDelete = function(req, res, next, collection) {
