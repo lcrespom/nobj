@@ -1,9 +1,9 @@
 REST DB layer
-- POST for Create, PUT for Update, DELETE for Delete --> see http://www.senchalabs.org/connect/methodOverride.html
+* POST for Create, PUT for Update, DELETE for Delete --> see http://www.senchalabs.org/connect/methodOverride.html
 - Proper error handling
 - Limits by configuration (e.g. max number of results to return etc.)
 - Access control: allow operations depending on user identity
-- Refactor data.connectHandler so dbParams can be passed during server startu, like this:
+- Refactor data.connectHandler so dbParams can be passed during server startup, like this:
 	svr.use('/data', data.connectHandler(dbParams))
 
 UI Layer
