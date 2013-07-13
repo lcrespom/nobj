@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Books</title>
+		<link rel="stylesheet" href="/style.css" />
+		<script src="/jquery.js"></script>
+		<style type="text/css">
+			th {
+				text-align: left;
+			}
+			td {
+				padding-right: 1em;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>Books</h1>
+		
+		<table id="books">
+			<tr>
+				<th>Title</th>
+				<th>Author</th>
+				<th>Actions</th>
+			</tr>
+		</table>
+
+		<p>	Back to <a href="/">main</a> </p>
+		
+<script>
+	$(function() {
+		function getBookData(cb) {
+			$.getJSON('/data/books', function(result) {
+				if (result.err) alert(result.err);
+				else cb(result.items);
+			});
+		}
+
+		function registerActions(row, i) {
+			$("a.editLink", row).click(function() { alert("Edit row " + i); });
+			$("a.delLink", row).click(function() { alert("Delete row " + i); });
+		}
+
+		getBookData(function(items) {
+			var table = $("#books");
+			for (var i = 0; i < items.length; i++) {
+				var book = items[i];
+				var newRow = '<tr><td>' + book.title + '</td>';
+				newRow += '<td>' + book.author + '</td>';
+				newRow += '<td><a class="editLink" href="#">Edit</a>';
+				newRow += ' / <a class="delLink" href="#">Delete</a></td></tr>';
+				var newRowElement = $(newRow);
+				registerActions(newRowElement, i);
+				table.append(newRowElement);
+			}
+		});
+
+	});
+</script>
+
+	</body>
+</html>
