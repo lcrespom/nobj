@@ -8,6 +8,8 @@ REST DB layer
 
 UI Layer
 - Start with example --> 2nd hand book website
+- use requireJS
+- refactor
 - Abstract to naked objects
 
 Dev env
@@ -15,6 +17,5 @@ Dev env
 - Automated build (cake?)
 - Automated repository integration (github?)
 
-JSON GET cache problems in explorer
-- convert into POST with _method="get"?
-- add random hash?
+* JSON GET cache problems in explorer => convert into POST with _method="get"
+- Extensive cross-browser testing, especially of hash-based navigation

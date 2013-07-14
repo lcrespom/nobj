@@ -9,7 +9,11 @@
 <script>
 	$(function() {
 		function getBookData(cb) {
-			$.getJSON('/data/books', function(result) {
+			$.ajax({
+				type: "POST",
+				url: "/data/books",
+				data: {	_method: "get" }
+			}).done(function(result) {
 				if (result.err) alert(result.err);
 				else cb(result.items);
 			});
