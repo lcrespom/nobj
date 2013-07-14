@@ -14,3 +14,7 @@ Dev env
 - Automated tests
 - Automated build (cake?)
 - Automated repository integration (github?)
+
+JSON GET cache problems in explorer
+- convert into POST with _method="get"?
+- add random hash?
