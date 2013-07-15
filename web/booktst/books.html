@@ -15,7 +15,15 @@
 
 		function registerActions(row, book) {
 			$("a.editLink", row).click(function() { window.books.current = book });
-			$("a.delLink", row).click(function() { alert("Delete entry " + book._id); });
+			$("a.delLink", row).click(function() {
+				data.delete('books', book._id).done(function(result) {
+					alert("Book deleted: " + result);
+					row.remove();
+				}).fail(function(err) {
+					alert("Error: " + err);
+				});
+				return false;
+			});
 		}
 
 		data.get('books').done(function(items) {
@@ -25,7 +33,7 @@
 				var newRow = '<tr><td>' + book.title + '</td>';
 				newRow += '<td>' + book.author + '</td>';
 				newRow += '<td><a class="editLink" href="#edit">Edit</a>';
-				newRow += ' / <a class="delLink" href="#">Delete</a></td></tr>';
+				newRow += ' / <a class="delLink" href="">Delete</a></td></tr>';
 				var newRowElement = $(newRow);
 				registerActions(newRowElement, book);
 				rows.append(newRowElement);

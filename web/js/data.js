@@ -40,6 +40,46 @@
           return deferred.reject(result);
         });
         return deferred.promise();
+      },
+      "delete": function(collection, oid) {
+        var deferred;
+        deferred = $.Deferred();
+        $.ajax({
+          type: 'POST',
+          url: "/data/" + collection,
+          data: {
+            _method: 'delete',
+            _id: oid
+          }
+        }).done(function(result) {
+          if (result.err) {
+            return deferred.reject(result.err);
+          } else {
+            return deferred.resolve(result);
+          }
+        }).fail(function(result) {
+          return deferred.reject(result);
+        });
+        return deferred.promise();
+      },
+      post: function(collection, postData) {
+        var deferred;
+        deferred = $.Deferred();
+        postData._method = 'put';
+        $.ajax({
+          type: 'POST',
+          url: "/data/" + collection,
+          data: postData
+        }).done(function(result) {
+          if (result.err) {
+            return deferred.reject(result.err);
+          } else {
+            return deferred.resolve(result);
+          }
+        }).fail(function(result) {
+          return deferred.reject(result);
+        });
+        return deferred.promise();
       }
     };
   });

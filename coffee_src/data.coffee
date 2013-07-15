@@ -68,6 +68,7 @@ doDelete = (req, res, next, collection) ->
 		respondJson(res, { err: err, result: numRemoved }))
 
 respondJson = (res, obj) ->
+	console.log('Response: ', obj)
 	res.writeHead(200, 'Content-Type': 'application/json')
 	if not obj
 		res.end('{ result: <null> }')

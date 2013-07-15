@@ -121,6 +121,7 @@
   };
 
   respondJson = function(res, obj) {
+    console.log('Response: ', obj);
     res.writeHead(200, {
       'Content-Type': 'application/json'
     });
