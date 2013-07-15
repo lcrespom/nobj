@@ -7,9 +7,10 @@ REST DB layer
 	svr.use('/data', data.connectHandler(dbParams))
 
 UI Layer
-- Start with example --> 2nd hand book website
-- use requireJS
+* Start with example --> 2nd hand book website
+* use requireJS
 - refactor
+	- create data module to encapsulate al data REST calls
 - Abstract to naked objects
 
 Dev env
