@@ -26,7 +26,8 @@
 			});
 		}
 
-		data.get('books').done(function(items) {
+		data.get('books').done(function(result) {
+			var items = result.items;
 			var rows = $("#books tbody");
 			for (var i = 0; i < items.length; i++) {
 				var book = items[i];

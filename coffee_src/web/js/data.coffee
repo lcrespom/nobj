@@ -1,62 +1,34 @@
 define( ->
+
+	ajax = (collection, method, data) ->
+		deferred = $.Deferred()
+		data = data || {}
+		data._method = method
+		$.ajax(
+			type: 'POST'
+			url: "/data/#{collection}"
+			data: data
+		).done( (result) ->
+			if result.err then deferred.reject(result.err)
+			else deferred.resolve(result)
+		).fail( (result) ->
+			deferred.reject(result)
+		)
+		return deferred.promise()
+
 	return {
 		get: (collection) ->
-			deferred = $.Deferred()
-			$.ajax(
-				type: 'POST'
-				url: "/data/#{collection}"
-				data: { _method: 'get' }
-			).done( (result) ->
-				if result.err then deferred.reject(result.err)
-				else deferred.resolve(result.items)
-			).fail( (result) ->
-				deferred.reject(result)
-			)
-			return deferred.promise()
+			return ajax(collection, 'get')
 
 		put: (collection, putData) ->
-			deferred = $.Deferred()
-			putData._method = 'put'
-			$.ajax(
-				type: 'POST'
-				url: "/data/#{collection}"
-				data: putData
-			).done( (result) ->
-				if (result.err) then deferred.reject(result.err)
-				else deferred.resolve(result)
-			).fail( (result) ->
-				deferred.reject(result)
-			)
-			return deferred.promise()
-
-		delete: (collection, oid) ->
-			deferred =$.Deferred()
-			$.ajax(
-				type: 'POST'
-				url: "/data/#{collection}"
-				data: { _method: 'delete', _id: oid }
-			).done( (result) ->
-				if result.err then deferred.reject(result.err)
-				else deferred.resolve(result)
-			).fail( (result) ->
-				deferred.reject(result)
-			)
-			return deferred.promise()
+			return ajax(collection, 'put', putData)
 
 		post: (collection, postData) ->
-			deferred = $.Deferred()
-			postData._method = 'put'
-			$.ajax(
-				type: 'POST'
-				url: "/data/#{collection}"
-				data: postData
-			).done( (result) ->
-				if (result.err) then deferred.reject(result.err)
-				else deferred.resolve(result)
-			).fail( (result) ->
-				deferred.reject(result)
-			)
-			return deferred.promise()
+			return ajax(collection, 'post', postData)
+
+		delete: (collection, oid) ->
+			delData = { _id: oid }
+			return ajax(collection, 'delete', delData)
 
 	}
 )

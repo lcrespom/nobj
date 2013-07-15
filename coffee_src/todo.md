@@ -12,7 +12,7 @@ UI Layer
 - [x] Start with example --> 2nd hand book website
 - [ ] use requireJS
 - [ ] refactor
-	- [ ] create data module to encapsulate al data REST calls
+	- [x] create data module to encapsulate all data REST calls
 - [ ] Abstract to naked objects
 
 Dev env
