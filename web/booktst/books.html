@@ -7,24 +7,14 @@
 </table>
 
 <script>
-	$(function() {
-		function getBookData(cb) {
-			$.ajax({
-				type: "POST",
-				url: "/data/books",
-				data: {	_method: "get" }
-			}).done(function(result) {
-				if (result.err) alert(result.err);
-				else cb(result.items);
-			});
-		}
+	require(['data'], function(data) {
 
 		function registerActions(row, book) {
 			$("a.editLink", row).click(function() { window.books.current = book });
 			$("a.delLink", row).click(function() { alert("Delete entry " + book._id); });
 		}
 
-		getBookData(function(items) {
+		data.get('books', function(items) {
 			var table = $("#books");
 			for (var i = 0; i < items.length; i++) {
 				var book = items[i];
@@ -37,5 +27,6 @@
 				table.append(newRowElement);
 			}
 		});
+
 	});
 </script>

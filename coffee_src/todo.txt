@@ -16,6 +16,9 @@ Dev env
 - Automated tests
 - Automated build (cake?)
 - Automated repository integration (github?)
+- Dependencies:
+	- connect, mongodb, underscore
+	- Create module definition file with dependencies
 
 * JSON GET cache problems in explorer => convert into POST with _method="get"
 - Extensive cross-browser testing, especially of hash-based navigation

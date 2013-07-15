@@ -13,21 +13,17 @@
 </form>
 
 <script>
-	$(function() {
+	require(['data'], function(data) {
 		if (!window.books || !window.books.current) return;
 		$("#book_title").val(window.books.current.title);
 		$("#book_author").val(window.books.current.author);
 		$("#book_edit").submit(function() {
-			$.ajax({
-				type: "POST",
-				url: "/data/books",
-				data: {
-					_method: "put",
-					title: $("#book_title").val(),
-					author: $("#book_author").val(),
-					_id: window.books.current._id
-				}
-			}).done(function() {
+			var putData = {
+				title: $("#book_title").val(),
+				author: $("#book_author").val(),
+				_id: window.books.current._id
+			};
+			data.put('books', putData, function() {
 				alert("Data Saved");
 			});
 			return false;
