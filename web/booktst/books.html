@@ -1,9 +1,13 @@
 <table id="books">
-	<tr>
-		<th>Title</th>
-		<th>Author</th>
-		<th>Actions</th>
-	</tr>
+	<thead>
+		<tr>
+			<th>Title</th>
+			<th>Author</th>
+			<th>Actions</th>
+		</tr>
+	</thead>
+	<tbody>
+	</tbody>
 </table>
 
 <script>
@@ -14,8 +18,8 @@
 			$("a.delLink", row).click(function() { alert("Delete entry " + book._id); });
 		}
 
-		data.get('books', function(items) {
-			var table = $("#books");
+		data.get('books').done(function(items) {
+			var rows = $("#books tbody");
 			for (var i = 0; i < items.length; i++) {
 				var book = items[i];
 				var newRow = '<tr><td>' + book.title + '</td>';
@@ -24,8 +28,10 @@
 				newRow += ' / <a class="delLink" href="#">Delete</a></td></tr>';
 				var newRowElement = $(newRow);
 				registerActions(newRowElement, book);
-				table.append(newRowElement);
+				rows.append(newRowElement);
 			}
+		}).fail(function(err) {
+			alert("Error: " + err);
 		});
 
 	});

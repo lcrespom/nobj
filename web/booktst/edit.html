@@ -23,8 +23,10 @@
 				author: $("#book_author").val(),
 				_id: window.books.current._id
 			};
-			data.put('books', putData, function() {
+			data.put('books', putData).done(function() {
 				alert("Data Saved");
+			}).fail(function() {
+				alert("Error while saving data");
 			});
 			return false;
 		});

@@ -2,8 +2,10 @@
 (function() {
   define(function() {
     return {
-      get: function(collection, cb) {
-        return $.ajax({
+      get: function(collection) {
+        var deferred;
+        deferred = $.Deferred();
+        $.ajax({
           type: 'POST',
           url: "/data/" + collection,
           data: {
@@ -11,21 +13,33 @@
           }
         }).done(function(result) {
           if (result.err) {
-            return alert(result.err);
+            return deferred.reject(result.err);
           } else {
-            return cb(result.items);
+            return deferred.resolve(result.items);
           }
+        }).fail(function(result) {
+          return deferred.reject(result);
         });
+        return deferred.promise();
       },
-      put: function(collection, putData, cb) {
+      put: function(collection, putData) {
+        var deferred;
+        deferred = $.Deferred();
         putData._method = 'put';
-        return $.ajax({
+        $.ajax({
           type: 'POST',
           url: "/data/" + collection,
           data: putData
         }).done(function(result) {
-          return cb(result);
+          if (result.err) {
+            return deferred.reject(result.err);
+          } else {
+            return deferred.resolve(result);
+          }
+        }).fail(function(result) {
+          return deferred.reject(result);
         });
+        return deferred.promise();
       }
     };
   });
