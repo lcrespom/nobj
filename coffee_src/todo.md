@@ -12,9 +12,9 @@ UI Layer
 - [x] Start with example --> 2nd hand book website
 	- [x] CRUD => post (Create) / get (Read) / put (Update) / delete (Delete)
 - [x] use requireJS
-- [ ] refactor
+- [x] refactor
 	- [x] create data module to encapsulate all data REST calls
-	- [ ] remove JS code from HTML pages
+	- [x] remove JS code from HTML pages
 - [ ] Abstract to naked objects
 
 Dev env
