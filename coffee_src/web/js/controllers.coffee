@@ -26,8 +26,8 @@ define(['data'], (data) ->
 					newRow += '<td><a class=\'editLink\' href=\'#edit\'>Edit</a>'
 					newRow += ' / <a class=\'delLink\' href=\'\'>Delete</a></td></tr>'
 					newRowElement = $(newRow)
-					registerActions newRowElement, book
-					rows.append newRowElement
+					registerActions(newRowElement, book)
+					rows.append(newRowElement)
 			).fail( (err) ->
 				alert 'Error: ' + err
 			)
