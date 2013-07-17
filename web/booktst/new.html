@@ -1,0 +1,30 @@
+<form id="book_new">
+	<div>
+		<label>Title</label>
+		<input type="text" id="book_title" name="title"/>
+	</div>
+	<div>
+		<label>Author</label>
+		<input type="text" id="book_author" name="author"/>
+	</div>
+	<div>
+		<button type="submit">Create new book</button>
+	</div>
+</form>
+
+<script>
+	require(['data'], function(data) {
+		$("#book_new").submit(function() {
+			var postData = {
+				title: $("#book_title").val(),
+				author: $("#book_author").val()
+			};
+			data.post('books', postData).done(function() {
+				alert("New book added");
+			}).fail(function() {
+				alert("Error while saving data");
+			});
+			return false;
+		});
+	});
+</script>

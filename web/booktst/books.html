@@ -10,6 +10,8 @@
 	</tbody>
 </table>
 
+<p><a href="#new">Add new book</a></p>
+
 <script>
 	require(['data'], function(data) {
 
@@ -26,22 +28,27 @@
 			});
 		}
 
-		data.get('books').done(function(result) {
-			var items = result.items;
-			var rows = $("#books tbody");
-			for (var i = 0; i < items.length; i++) {
-				var book = items[i];
-				var newRow = '<tr><td>' + book.title + '</td>';
-				newRow += '<td>' + book.author + '</td>';
-				newRow += '<td><a class="editLink" href="#edit">Edit</a>';
-				newRow += ' / <a class="delLink" href="">Delete</a></td></tr>';
-				var newRowElement = $(newRow);
-				registerActions(newRowElement, book);
-				rows.append(newRowElement);
-			}
-		}).fail(function(err) {
-			alert("Error: " + err);
-		});
+		function fillTable() {
+			data.get('books').done(function(result) {
+				var items = result.items;
+				var rows = $("#books tbody");
+				for (var i = 0; i < items.length; i++) {
+					var book = items[i];
+					var newRow = '<tr><td>' + book.title + '</td>';
+					newRow += '<td>' + book.author + '</td>';
+					newRow += '<td><a class="editLink" href="#edit">Edit</a>';
+					newRow += ' / <a class="delLink" href="">Delete</a></td></tr>';
+					var newRowElement = $(newRow);
+					registerActions(newRowElement, book);
+					rows.append(newRowElement);
+				}
+			}).fail(function(err) {
+				alert("Error: " + err);
+			});
+		}
+
+
+		fillTable();
 
 	});
 </script>
