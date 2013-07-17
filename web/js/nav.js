@@ -3,21 +3,44 @@
   define(function() {
     var nav;
     nav = {
-      loadView: function(url) {
-        return $("#view").load(url, function() {
-          return console.log("Loaded " + url);
+      oldViewId: '',
+      defaultViewId: '',
+      loadView: function(viewId) {
+        var url, _ref, _ref1,
+          _this = this;
+        if ((_ref = this.controller) != null) {
+          if (typeof _ref.beforeUnload === "function") {
+            _ref.beforeUnload(this.oldViewId);
+          }
+        }
+        this.controller = typeof this.getController === "function" ? this.getController(viewId) : void 0;
+        if ((_ref1 = this.controller) != null) {
+          if (typeof _ref1.beforeLoad === "function") {
+            _ref1.beforeLoad(viewId);
+          }
+        }
+        url = viewId + '.html';
+        return $('#view').load(url, function() {
+          var _ref2;
+          console.log('Loaded ' + url);
+          if ((_ref2 = _this.controller) != null) {
+            if (typeof _ref2.afterLoad === "function") {
+              _ref2.afterLoad(viewId);
+            }
+          }
+          return _this.oldViewId = viewId;
         });
       }
     };
     window.onhashchange = function() {
-      var url;
-      console.log("Hash changed to " + location.hash);
+      var viewId;
+      console.log('Hash changed to ' + location.hash);
       if (location.hash.length <= 0) {
-        url = "books.html";
+        viewId = nav.defaultViewId;
       } else {
-        url = location.hash.substring(1) + ".html";
+        viewId = location.hash.substring(1);
       }
-      return nav.loadView(url);
+      return nav.loadView(viewId);
     };
     return nav;
   });
