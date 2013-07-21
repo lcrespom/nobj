@@ -7,13 +7,6 @@ require(['nav', 'controllers'], (nav, controllers) ->
 	# Create application data
 	window.books = {}
 
-	### A sample console controller
-	consoleController = (viewId) ->
-		beforeUnload: -> console.log('Before unload ' + viewId)
-		beforeLoad: -> console.log('Before load ' + viewId)
-		afterLoad: -> console.log('After load ' + viewId)
-	###
-
 	#  Register controllers
 	nav.getController = (viewId) -> controllers[viewId]
 

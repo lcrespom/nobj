@@ -3,12 +3,14 @@ define( ->
 		oldViewId: ''
 		defaultViewId: ''
 		loadView: (viewId) ->
-			@controller?.beforeUnload?(@oldViewId)
+			oldController = @controller
 			@controller = @getController?(viewId)
+			oldController?.beforeUnload?(@oldViewId)
 			@controller?.beforeLoad?(viewId)
 			url = viewId + '.html'
 			$('#view').load(url, =>
 				console.log('Loaded ' + url)
+				oldController?.afterUnload?(@oldViewId)
 				@controller?.afterLoad?(viewId)
 				@oldViewId = viewId
 			)

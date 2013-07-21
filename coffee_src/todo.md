@@ -15,6 +15,7 @@ UI Layer
 - [x] refactor
 	- [x] create data module to encapsulate all data REST calls
 	- [x] remove JS code from HTML pages
+	- [ ] controller: properly deregister event listeners
 - [ ] Abstract to naked objects
 
 Dev env

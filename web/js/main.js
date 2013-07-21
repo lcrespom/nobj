@@ -7,13 +7,6 @@
       };
     }
     window.books = {};
-    /* A sample console controller
-    	consoleController = (viewId) ->
-    		beforeUnload: -> console.log('Before unload ' + viewId)
-    		beforeLoad: -> console.log('Before load ' + viewId)
-    		afterLoad: -> console.log('After load ' + viewId)
-    */
-
     nav.getController = function(viewId) {
       return controllers[viewId];
     };

@@ -6,26 +6,32 @@
       oldViewId: '',
       defaultViewId: '',
       loadView: function(viewId) {
-        var url, _ref, _ref1,
+        var oldController, url, _ref,
           _this = this;
-        if ((_ref = this.controller) != null) {
-          if (typeof _ref.beforeUnload === "function") {
-            _ref.beforeUnload(this.oldViewId);
+        oldController = this.controller;
+        this.controller = typeof this.getController === "function" ? this.getController(viewId) : void 0;
+        if (oldController != null) {
+          if (typeof oldController.beforeUnload === "function") {
+            oldController.beforeUnload(this.oldViewId);
           }
         }
-        this.controller = typeof this.getController === "function" ? this.getController(viewId) : void 0;
-        if ((_ref1 = this.controller) != null) {
-          if (typeof _ref1.beforeLoad === "function") {
-            _ref1.beforeLoad(viewId);
+        if ((_ref = this.controller) != null) {
+          if (typeof _ref.beforeLoad === "function") {
+            _ref.beforeLoad(viewId);
           }
         }
         url = viewId + '.html';
         return $('#view').load(url, function() {
-          var _ref2;
+          var _ref1;
           console.log('Loaded ' + url);
-          if ((_ref2 = _this.controller) != null) {
-            if (typeof _ref2.afterLoad === "function") {
-              _ref2.afterLoad(viewId);
+          if (oldController != null) {
+            if (typeof oldController.afterUnload === "function") {
+              oldController.afterUnload(_this.oldViewId);
+            }
+          }
+          if ((_ref1 = _this.controller) != null) {
+            if (typeof _ref1.afterLoad === "function") {
+              _ref1.afterLoad(viewId);
             }
           }
           return _this.oldViewId = viewId;
