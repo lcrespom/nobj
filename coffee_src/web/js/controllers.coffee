@@ -1,4 +1,4 @@
-define(['data'], (data) ->
+define(['data', 'nobj'], (data, nobj) ->
 
 	global = @
 
@@ -36,15 +36,10 @@ define(['data'], (data) ->
 
 
 	afterEditLoad = ->
-		return if !global.books || !global.books.current
-		$('#book_title').val(global.books.current.title)
-		$('#book_author').val(global.books.current.author)
-		$('#book_edit').submit( ->
-			putData =
-				title: $('#book_title').val()
-				author: $('#book_author').val()
-				_id: global.books.current._id
-			data.put('books', putData).done( ->
+		form = $('#book_edit')
+		nobj.obj2form(global.books.current, form, bookSpec)
+		form.submit( ->
+			nobj.put(form, bookSpec).done( ->
 				alert('Data Saved')
 			).fail(->
 				alert('Error while saving data')
@@ -54,11 +49,9 @@ define(['data'], (data) ->
 
 
 	afterNewLoad = ->
-		$('#book_new').submit( ->
-			postData =
-				title: $('#book_title').val()
-				author: $('#book_author').val()
-			data.post('books', postData).done( ->
+		form = $('#book_new')
+		form.submit( ->
+			nobj.post(form, bookSpec).done( ->
 				alert('New book added')
 			).fail( ->
 				alert('Error while saving data')
@@ -66,6 +59,10 @@ define(['data'], (data) ->
 			return false
 		)
 
+	bookSpec = {
+		collection: 'books'
+		fields: [ { field: 'title' }, { field: 'author' } ]
+	}
 
 	return {
 		books:

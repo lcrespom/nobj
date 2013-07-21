@@ -16,6 +16,9 @@ UI Layer
 	- [x] create data module to encapsulate all data REST calls
 	- [x] remove JS code from HTML pages
 	- [ ] controller: properly deregister event listeners
+- [ ] Hash-based navigation fine-tuning
+	- [ ] F5 with some hash in the URL should either render the appropriate view,
+		or clean the hash in case the main page is displayed
 - [ ] Abstract to naked objects
 
 Dev env
