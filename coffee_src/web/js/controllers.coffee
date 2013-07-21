@@ -36,10 +36,10 @@ define(['data'], (data) ->
 
 
 	afterEditLoad = ->
-		return if not global.books or not global.books.current
-		$('#book_title').val global.books.current.title
-		$('#book_author').val global.books.current.author
-		$('#book_edit').submit ->
+		return if !global.books || !global.books.current
+		$('#book_title').val(global.books.current.title)
+		$('#book_author').val(global.books.current.author)
+		$('#book_edit').submit( ->
 			putData =
 				title: $('#book_title').val()
 				author: $('#book_author').val()
@@ -50,10 +50,11 @@ define(['data'], (data) ->
 				alert('Error while saving data')
 			)
 			return false
+		)
 
 
 	afterNewLoad = ->
-		$('#book_new').submit ->
+		$('#book_new').submit( ->
 			postData =
 				title: $('#book_title').val()
 				author: $('#book_author').val()
@@ -63,6 +64,7 @@ define(['data'], (data) ->
 				alert('Error while saving data')
 			)
 			return false
+		)
 
 
 	return {
