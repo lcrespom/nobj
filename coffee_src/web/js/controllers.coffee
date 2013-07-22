@@ -20,14 +20,12 @@ define(['data', 'nobj'], (data, nobj) ->
 			data.get('books').done( (result) ->
 				items = result.items
 				rows = $('#books tbody')
-				for book in items
-					newRow = '<tr><td>' + book.title + '</td>'
-					newRow += '<td>' + book.author + '</td>'
-					newRow += '<td><a class=\'editLink\' href=\'#edit\'>Edit</a>'
-					newRow += ' / <a class=\'delLink\' href=\'\'>Delete</a></td></tr>'
-					newRowElement = $(newRow)
-					registerActions(newRowElement, book)
-					rows.append(newRowElement)
+				nobj.fillTable(items, $('#books'), (book, row) ->
+					actions = '<a class=\'editLink\' href=\'#edit\'>Edit</a>'
+					actions += ' / <a class=\'delLink\' href=\'\'>Delete</a>'
+					$('td:nth-child(3)', row).append(actions)
+					registerActions(row, book)
+				)
 			).fail( (err) ->
 				alert 'Error: ' + err
 			)

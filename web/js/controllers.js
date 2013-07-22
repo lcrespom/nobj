@@ -21,21 +21,16 @@
       };
       fillTable = function() {
         return data.get('books').done(function(result) {
-          var book, items, newRow, newRowElement, rows, _i, _len, _results;
+          var items, rows;
           items = result.items;
           rows = $('#books tbody');
-          _results = [];
-          for (_i = 0, _len = items.length; _i < _len; _i++) {
-            book = items[_i];
-            newRow = '<tr><td>' + book.title + '</td>';
-            newRow += '<td>' + book.author + '</td>';
-            newRow += '<td><a class=\'editLink\' href=\'#edit\'>Edit</a>';
-            newRow += ' / <a class=\'delLink\' href=\'\'>Delete</a></td></tr>';
-            newRowElement = $(newRow);
-            registerActions(newRowElement, book);
-            _results.push(rows.append(newRowElement));
-          }
-          return _results;
+          return nobj.fillTable(items, $('#books'), function(book, row) {
+            var actions;
+            actions = '<a class=\'editLink\' href=\'#edit\'>Edit</a>';
+            actions += ' / <a class=\'delLink\' href=\'\'>Delete</a>';
+            $('td:nth-child(3)', row).append(actions);
+            return registerActions(row, book);
+          });
         }).fail(function(err) {
           return alert('Error: ' + err);
         });

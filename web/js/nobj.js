@@ -2,6 +2,30 @@
 (function() {
   define(['data'], function(data) {
     return {
+      fillTable: function(items, table, rowcb) {
+        var field, fields, head, heads, item, newRow, newRowElement, rows, _i, _j, _k, _len, _len1, _len2, _results;
+        heads = $('thead tr th', table);
+        fields = [];
+        for (_i = 0, _len = heads.length; _i < _len; _i++) {
+          head = heads[_i];
+          fields.push($(head).attr('data-nobj-field'));
+        }
+        rows = $('tbody', table);
+        _results = [];
+        for (_j = 0, _len1 = items.length; _j < _len1; _j++) {
+          item = items[_j];
+          newRow = '<tr>';
+          for (_k = 0, _len2 = fields.length; _k < _len2; _k++) {
+            field = fields[_k];
+            newRow += '<td>' + (item[field] || '') + '</td>';
+          }
+          newRow += '</tr>';
+          newRowElement = $(newRow);
+          rowcb(item, newRowElement);
+          _results.push(rows.append(newRowElement));
+        }
+        return _results;
+      },
       obj2form: function(obj, form) {
         var input, jqInput, value, _i, _len, _ref, _results;
         _ref = $('[name]', form);
