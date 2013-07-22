@@ -37,7 +37,7 @@ define(['data', 'nobj'], (data, nobj) ->
 
 	afterEditLoad = ->
 		form = $('#book_edit')
-		nobj.obj2form(global.books.current, form, bookSpec)
+		nobj.obj2form(global.books.current, form)
 		form.submit( ->
 			nobj.put(form, 'books').done( ->
 				alert('Data Saved')
@@ -58,11 +58,6 @@ define(['data', 'nobj'], (data, nobj) ->
 			)
 			return false
 		)
-
-	bookSpec = {
-		collection: 'books'
-		fields: [ { field: 'title' }, { field: 'author' } ]
-	}
 
 	return {
 		books:
