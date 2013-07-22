@@ -3,7 +3,8 @@ define( ->
 	ajax = (collection, method, data) ->
 		deferred = $.Deferred()
 		data = data || {}
-		data._method = method
+		if data.constructor == String then data += "&_method=#{method}"
+		else data._method = method
 		$.ajax(
 			type: 'POST'
 			url: "/data/#{collection}"

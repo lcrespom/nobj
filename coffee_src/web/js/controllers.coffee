@@ -39,7 +39,7 @@ define(['data', 'nobj'], (data, nobj) ->
 		form = $('#book_edit')
 		nobj.obj2form(global.books.current, form, bookSpec)
 		form.submit( ->
-			nobj.put(form, bookSpec).done( ->
+			nobj.put(form, 'books').done( ->
 				alert('Data Saved')
 			).fail(->
 				alert('Error while saving data')
@@ -51,7 +51,7 @@ define(['data', 'nobj'], (data, nobj) ->
 	afterNewLoad = ->
 		form = $('#book_new')
 		form.submit( ->
-			nobj.post(form, bookSpec).done( ->
+			nobj.post(form, 'books').done( ->
 				alert('New book added')
 			).fail( ->
 				alert('Error while saving data')

@@ -47,7 +47,7 @@
       form = $('#book_edit');
       nobj.obj2form(global.books.current, form, bookSpec);
       return form.submit(function() {
-        nobj.put(form, bookSpec).done(function() {
+        nobj.put(form, 'books').done(function() {
           return alert('Data Saved');
         }).fail(function() {
           return alert('Error while saving data');
@@ -59,7 +59,7 @@
       var form;
       form = $('#book_new');
       return form.submit(function() {
-        nobj.post(form, bookSpec).done(function() {
+        nobj.post(form, 'books').done(function() {
           return alert('New book added');
         }).fail(function() {
           return alert('Error while saving data');

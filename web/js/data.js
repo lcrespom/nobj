@@ -6,7 +6,11 @@
       var deferred;
       deferred = $.Deferred();
       data = data || {};
-      data._method = method;
+      if (data.constructor === String) {
+        data += "&_method=" + method;
+      } else {
+        data._method = method;
+      }
       $.ajax({
         type: 'POST',
         url: "/data/" + collection,
