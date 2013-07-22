@@ -18,9 +18,7 @@ define(['data', 'nobj'], (data, nobj) ->
 
 		fillTable = ->
 			data.get('books').done( (result) ->
-				items = result.items
-				rows = $('#books tbody')
-				nobj.fillTable(items, $('#books'), (book, row) ->
+				nobj.fillTable(result.items, $('#books'), (book, row) ->
 					actions = '<a class=\'editLink\' href=\'#edit\'>Edit</a>'
 					actions += ' / <a class=\'delLink\' href=\'\'>Delete</a>'
 					$('td:nth-child(3)', row).append(actions)
@@ -56,6 +54,7 @@ define(['data', 'nobj'], (data, nobj) ->
 			)
 			return false
 		)
+
 
 	return {
 		books:

@@ -21,10 +21,7 @@
       };
       fillTable = function() {
         return data.get('books').done(function(result) {
-          var items, rows;
-          items = result.items;
-          rows = $('#books tbody');
-          return nobj.fillTable(items, $('#books'), function(book, row) {
+          return nobj.fillTable(result.items, $('#books'), function(book, row) {
             var actions;
             actions = '<a class=\'editLink\' href=\'#edit\'>Edit</a>';
             actions += ' / <a class=\'delLink\' href=\'\'>Delete</a>';
