@@ -1,4 +1,4 @@
-define(['data'], (data) ->
+define(['./data'], (data) ->
 
 	return {
 

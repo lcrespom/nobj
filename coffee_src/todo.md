@@ -19,7 +19,7 @@ UI Layer
 - [ ] Hash-based navigation fine-tuning
 	- [ ] F5 with some hash in the URL should either render the appropriate view,
 		or clean the hash in case the main page is displayed
-- [ ] Abstract to naked objects
+- [x] Abstract to naked objects
 
 Dev env
 -------
