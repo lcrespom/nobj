@@ -11,7 +11,7 @@
         });
         return $('a.delLink', row).click(function() {
           data["delete"]('books', book._id).done(function(result) {
-            alert('Book deleted: ' + result);
+            alert('Book deleted: ' + result.result);
             return row.remove();
           }).fail(function(err) {
             return alert('Error: ' + err);
@@ -23,8 +23,8 @@
         return data.get('books').done(function(result) {
           return nobj.fillTable(result.items, $('#books'), function(book, row) {
             var actions;
-            actions = '<a class=\'editLink\' href=\'#edit\'>Edit</a>';
-            actions += ' / <a class=\'delLink\' href=\'\'>Delete</a>';
+            actions = '<a class="editLink" href="#edit">Edit</a>';
+            actions += ' / <a class="delLink" href="">Delete</a>';
             $('td:nth-child(3)', row).append(actions);
             return registerActions(row, book);
           });
