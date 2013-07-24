@@ -49,7 +49,6 @@ define(['./nobj', './data'], (nobj, data) ->
 			fillTable = ->
 				data.get(collection).done( (result) ->
 					nobj.fillTable(result.items, $(tableQuery), (item, row) ->
-						#TODO href="#edit" is a hardcoded page, should be parametric
 						actions = '<a class="editLink" href="#edit">Edit</a>'
 						actions += ' / <a class="delLink" href="">Delete</a>'
 						$('td:last', row).append(actions)

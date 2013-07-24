@@ -14,7 +14,7 @@
     nav.getController = function(viewId) {
       var controllers;
       controllers = {
-        books: {
+        list: {
           afterLoad: crudControllers.afterListLoad('books', '#books')
         },
         edit: {
@@ -26,7 +26,7 @@
       };
       return controllers[viewId];
     };
-    nav.defaultViewId = 'books';
+    nav.defaultViewId = 'list';
     return nav.loadView(nav.defaultViewId);
   });
 

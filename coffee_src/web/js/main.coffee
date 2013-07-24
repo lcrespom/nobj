@@ -10,7 +10,7 @@ require(['nobj/nav', 'nobj/crudControllers'], (nav, crudControllers) ->
 	#  Register controllers
 	nav.getController = (viewId) ->
 		controllers =
-			books:
+			list:
 				afterLoad: crudControllers.afterListLoad('books', '#books')
 			edit:
 				afterLoad: crudControllers.afterEditLoad('books', '#book_edit')
@@ -19,7 +19,7 @@ require(['nobj/nav', 'nobj/crudControllers'], (nav, crudControllers) ->
 		controllers[viewId]
 
 	# Navigate to the default page
-	nav.defaultViewId = 'books'
+	nav.defaultViewId = 'list'
 	nav.loadView(nav.defaultViewId)
 
 )
