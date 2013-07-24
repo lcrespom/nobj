@@ -1,8 +1,25 @@
 define(['./nobj', './data'], (nobj, data) ->
 
 	global = @
+	controllers = {}
+
+	addController = (collection, page, event, callback) ->
+		viewId = collection + '/' + page
+		controllers[viewId] = controllers[viewId] || {}
+		controllers[viewId][event] = callback
+
 
 	return {
+
+		addCollection: (collection) ->
+			global.nobj = global.nobj || {}
+			global.nobj.collections = global.nobj.collections || {}
+			global.nobj.collections[collection] = {}
+			addController(collection, 'list', 'afterLoad', @afterListLoad(collection, "##{collection}_list"))
+			addController(collection, 'edit', 'afterLoad', @afterEditLoad(collection, "##{collection}_edit"))
+			addController(collection, 'new', 'afterLoad', @afterNewLoad(collection, "##{collection}_new"))
+
+		getController: (viewId) -> controllers[viewId]
 
 		afterNewLoad: (collection, formQuery) ->
 			return ->

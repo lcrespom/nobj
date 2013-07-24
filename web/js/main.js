@@ -6,26 +6,8 @@
         log: function() {}
       };
     }
-    window.nobj = {
-      collections: {
-        books: {}
-      }
-    };
-    nav.getController = function(viewId) {
-      var controllers;
-      controllers = {
-        'books/list': {
-          afterLoad: crudControllers.afterListLoad('books', '#books')
-        },
-        'books/edit': {
-          afterLoad: crudControllers.afterEditLoad('books', '#book_edit')
-        },
-        'books/new': {
-          afterLoad: crudControllers.afterNewLoad('books', '#book_new')
-        }
-      };
-      return controllers[viewId];
-    };
+    crudControllers.addCollection('books');
+    nav.getController = crudControllers.getController;
     nav.defaultViewId = 'collections';
     return nav.loadView(nav.defaultViewId);
   });

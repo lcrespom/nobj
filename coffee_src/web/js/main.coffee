@@ -4,19 +4,9 @@ require(['nobj/nav', 'nobj/crudControllers'], (nav, crudControllers) ->
 	if !window.console
 		window.console = { log: -> }
 
-	# Create application data
-	window.nobj = { collections: { books: {} } }
-
+	crudControllers.addCollection('books')
 	#  Register controllers
-	nav.getController = (viewId) ->
-		controllers =
-			'books/list':
-				afterLoad: crudControllers.afterListLoad('books', '#books')
-			'books/edit':
-				afterLoad: crudControllers.afterEditLoad('books', '#book_edit')
-			'books/new':
-				afterLoad: crudControllers.afterNewLoad('books', '#book_new')
-		controllers[viewId]
+	nav.getController = crudControllers.getController
 
 	# Navigate to the default page
 	nav.defaultViewId = 'collections'
