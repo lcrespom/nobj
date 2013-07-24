@@ -53,7 +53,7 @@
           return data.get(collection).done(function(result) {
             return nobj.fillTable(result.items, $(tableQuery), function(item, row) {
               var actions;
-              actions = '<a class="editLink" href="#edit">Edit</a>';
+              actions = '<a class="editLink" href="#' + collection + '/edit">Edit</a>';
               actions += ' / <a class="delLink" href="">Delete</a>';
               $('td:last', row).append(actions);
               return registerActions(row, item);

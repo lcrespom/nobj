@@ -5,11 +5,12 @@ define( ->
 		loadView: (viewId) ->
 			oldController = @controller
 			@controller = @getController?(viewId)
+			if (!@controller) then console.warn("No controller found for view '#{viewId}'")
 			oldController?.beforeUnload?(@oldViewId)
 			@controller?.beforeLoad?(viewId)
 			url = viewId + '.html'
-			$('#view').load(url, =>
-				console.log('Loaded ' + url)
+			$('#view').load(url, (text, status) =>
+				console.log('Loaded', url, '- status:', status)
 				oldController?.afterUnload?(@oldViewId)
 				@controller?.afterLoad?(viewId)
 				@oldViewId = viewId

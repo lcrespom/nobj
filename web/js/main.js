@@ -14,19 +14,19 @@
     nav.getController = function(viewId) {
       var controllers;
       controllers = {
-        list: {
+        'books/list': {
           afterLoad: crudControllers.afterListLoad('books', '#books')
         },
-        edit: {
+        'books/edit': {
           afterLoad: crudControllers.afterEditLoad('books', '#book_edit')
         },
-        "new": {
+        'books/new': {
           afterLoad: crudControllers.afterNewLoad('books', '#book_new')
         }
       };
       return controllers[viewId];
     };
-    nav.defaultViewId = 'list';
+    nav.defaultViewId = 'collections';
     return nav.loadView(nav.defaultViewId);
   });
 

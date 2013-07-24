@@ -10,6 +10,9 @@
           _this = this;
         oldController = this.controller;
         this.controller = typeof this.getController === "function" ? this.getController(viewId) : void 0;
+        if (!this.controller) {
+          console.warn("No controller found for view '" + viewId + "'");
+        }
         if (oldController != null) {
           if (typeof oldController.beforeUnload === "function") {
             oldController.beforeUnload(this.oldViewId);
@@ -21,9 +24,9 @@
           }
         }
         url = viewId + '.html';
-        return $('#view').load(url, function() {
+        return $('#view').load(url, function(text, status) {
           var _ref1;
-          console.log('Loaded ' + url);
+          console.log('Loaded', url, '- status:', status);
           if (oldController != null) {
             if (typeof oldController.afterUnload === "function") {
               oldController.afterUnload(_this.oldViewId);

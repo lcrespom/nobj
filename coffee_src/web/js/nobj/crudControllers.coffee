@@ -49,7 +49,7 @@ define(['./nobj', './data'], (nobj, data) ->
 			fillTable = ->
 				data.get(collection).done( (result) ->
 					nobj.fillTable(result.items, $(tableQuery), (item, row) ->
-						actions = '<a class="editLink" href="#edit">Edit</a>'
+						actions = '<a class="editLink" href="#' + collection + '/edit">Edit</a>'
 						actions += ' / <a class="delLink" href="">Delete</a>'
 						$('td:last', row).append(actions)
 						registerActions(row, item)
