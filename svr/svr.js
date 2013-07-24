@@ -13,7 +13,7 @@
   svrConfig = {
     port: 1337,
     host: 'localhost',
-    rootDir: 'web'
+    rootDir: '../web'
   };
 
   launchServer = function() {
