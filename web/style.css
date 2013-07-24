@@ -1,3 +1,10 @@
 body {
 	font-family: sans-serif;
 }
+
+table.nobj-list th {
+	text-align: left;
+}
+table.nobj-list td {
+	padding-right: 2em;
+}
