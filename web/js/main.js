@@ -7,6 +7,7 @@
       };
     }
     crudControllers.addCollection('books');
+    crudControllers.addCollection('users');
     nav.getController = crudControllers.getController;
     nav.defaultViewId = 'collections';
     return nav.loadView(nav.defaultViewId);

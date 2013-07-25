@@ -5,6 +5,7 @@ require(['nobj/nav', 'nobj/crudControllers'], (nav, crudControllers) ->
 		window.console = { log: -> }
 
 	crudControllers.addCollection('books')
+	crudControllers.addCollection('users')
 	#  Register controllers
 	nav.getController = crudControllers.getController
 
