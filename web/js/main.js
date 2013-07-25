@@ -3,7 +3,9 @@
   require(['nobj/nav', 'nobj/crudControllers'], function(nav, crudControllers) {
     if (!window.console) {
       window.console = {
-        log: function() {}
+        log: function() {},
+        warn: function() {},
+        error: function() {}
       };
     }
     crudControllers.addCollection('books');
