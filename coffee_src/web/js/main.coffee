@@ -13,7 +13,7 @@ require(['nobj/nav', 'nobj/crudControllers'], (nav, crudControllers) ->
 	nav.getController = crudControllers.getController
 
 	# Navigate to the default page
-	nav.defaultViewId = 'collections'
-	nav.loadView(nav.defaultViewId)
+	nav.setNavigationArea('navArea', 'collections')
+	nav.loadDefaultView()
 
 )
