@@ -4,7 +4,7 @@ define(['./nobj', './data'], (nobj, data) ->
 	controllers = {}
 
 
-	#----- Controllers for creating, updating and listing a collection -----
+	#----- CRUD controllers -----
 
 	class CreatingController
 		constructor: (@collection, @query) ->
@@ -42,6 +42,19 @@ define(['./nobj', './data'], (nobj, data) ->
 				alert 'Error: ' + err
 			)
 
+	#----- Misc controllers -----
+
+	class ChainController
+		constructor: (@controllers) ->
+		beforeLoad: -> for controller in @controllers
+			controller.beforeLoad?()
+		afterLoad: -> for controller in @controllers
+			controller.afterLoad?()
+		beforeUnload: -> for controller in @controllers
+			controller.beforeUnlad?()
+		afterUnload: -> for controller in @controllers
+			controller.afterUnload?()
+
 
 	# Main: the crudControllers object provides a way to automatically register all CRUD controllers
 	#		for a given collection
@@ -56,9 +69,12 @@ define(['./nobj', './data'], (nobj, data) ->
 
 		getController: (viewId) -> controllers[viewId]
 
+		setController: (viewId, controller) -> controllers[viewId] = controller
+
 		ListingController: ListingController
 		UpdatingController: UpdatingController
 		CreatingController: CreatingController
+		ChainController: ChainController
 	}
 
 )
