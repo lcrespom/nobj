@@ -2,18 +2,6 @@ define(['./nobj', './data'], (nobj, data) ->
 
 	global = @
 	controllers = {}
-	actionHandlers = {}
-
-
-	class EditActionHandler
-		label: 'Edit'
-		mask: '$edit'
-		subscribe: (collection, item) ->
-
-	class DeleteActionHandler
-		label: 'Edit'
-		mask: '$edit'
-		subscribe: (collection, item) ->
 
 
 	#----- Controllers for creating, updating and listing a collection -----
@@ -66,8 +54,7 @@ define(['./nobj', './data'], (nobj, data) ->
 
 		fillTable: ->
 			data.get(@collection).done( (result) =>
-				nobj.fillTable(result.items, $(@query), (item, row) =>
-					
+				nobj.fillTable(@collection, result.items, $(@query), (item, row) =>
 					actions = '<a class="editLink" href="#' + @collection + '/edit">Edit</a>'
 					actions += ' / <a class="delLink" href="">Delete</a>'
 					$('td:last', row).append(actions)
@@ -83,7 +70,7 @@ define(['./nobj', './data'], (nobj, data) ->
 
 	# Main: the crudControllers object provides a way to automatically register all CRUD controllers
 	#		for a given collection
-	crudControllers =
+	return {
 		addCollection: (collection) ->
 			global.nobj = global.nobj || {}
 			global.nobj.collections = global.nobj.collections || {}
@@ -97,13 +84,6 @@ define(['./nobj', './data'], (nobj, data) ->
 		ListingController: ListingController
 		UpdatingController: UpdatingController
 		CreatingController: CreatingController
+	}
 
-		addActionHandler: (mask, actionHandler) ->
-			actionHandlers[mask] = actionHandler
-
-
-	crudControllers.addActionHandler('$edit', new EditActionHandler())
-	crudControllers.addActionHandler('$delete', new DeleteActionHandler())
-
-	return crudControllers
 )
