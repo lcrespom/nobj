@@ -57,39 +57,13 @@
         this.query = query;
       }
 
-      ListingController.prototype.registerActions = function(row, item) {
-        var _this = this;
-        $('a.editLink', row).click(function() {
-          return global.nobj.collections[_this.collection].current = item;
-        });
-        return $('a.delLink', row).click(function() {
-          data["delete"](_this.collection, item._id).done(function(result) {
-            alert('Item deleted: ' + result.result);
-            return row.remove();
-          }).fail(function(err) {
-            return alert('Error: ' + err);
-          });
-          return false;
-        });
-      };
-
-      ListingController.prototype.fillTable = function() {
+      ListingController.prototype.afterLoad = function() {
         var _this = this;
         return data.get(this.collection).done(function(result) {
-          return nobj.fillTable(_this.collection, result.items, $(_this.query), function(item, row) {
-            var actions;
-            actions = '<a class="editLink" href="#' + _this.collection + '/edit">Edit</a>';
-            actions += ' / <a class="delLink" href="">Delete</a>';
-            $('td:last', row).append(actions);
-            return _this.registerActions(row, item);
-          });
+          return nobj.fillTable(_this.collection, result.items, $(_this.query));
         }).fail(function(err) {
           return alert('Error: ' + err);
         });
-      };
-
-      ListingController.prototype.afterLoad = function() {
-        return this.fillTable();
       };
 
       return ListingController;

@@ -19,7 +19,6 @@ define(['./nobj', './data'], (nobj, data) ->
 				return false
 			)
 
-
 	class UpdatingController
 		constructor: (@collection, @query) ->
 		afterLoad: ->
@@ -34,38 +33,14 @@ define(['./nobj', './data'], (nobj, data) ->
 				return false
 			)
 
-
 	class ListingController
 		constructor: (@collection, @query) ->
-
-		registerActions: (row, item) ->
-			$('a.editLink', row).click( =>
-				global.nobj.collections[@collection].current = item
-			)
-			$('a.delLink', row).click( =>
-				data.delete(@collection, item._id).done( (result) ->
-					alert('Item deleted: ' + result.result)
-					row.remove()
-				).fail( (err) ->
-					alert('Error: ' + err)
-				)
-				return false
-			)
-
-		fillTable: ->
+		afterLoad: ->
 			data.get(@collection).done( (result) =>
-				nobj.fillTable(@collection, result.items, $(@query), (item, row) =>
-					actions = '<a class="editLink" href="#' + @collection + '/edit">Edit</a>'
-					actions += ' / <a class="delLink" href="">Delete</a>'
-					$('td:last', row).append(actions)
-					@registerActions(row, item)
-				)
+				nobj.fillTable(@collection, result.items, $(@query))
 			).fail( (err) ->
 				alert 'Error: ' + err
 			)
-
-		afterLoad: ->
-			@fillTable()
 
 
 	# Main: the crudControllers object provides a way to automatically register all CRUD controllers

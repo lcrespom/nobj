@@ -1,5 +1,6 @@
 define(['./data'], (data) ->
 
+	global = @
 	actionHandlers = []
 
 
@@ -18,7 +19,10 @@ define(['./data'], (data) ->
 			$('a.delLink', domNode).click( ->
 				data.delete(collection, item._id).done( (result) ->
 					alert('Item deleted: ' + result.result)
-					domNode.remove()
+					node = domNode.get(0)
+					while node.nodeName != 'TR'
+						node = node.parentElement
+					$(node).remove()
 				).fail( (err) ->
 					alert('Error: ' + err)
 				)
@@ -53,18 +57,19 @@ define(['./data'], (data) ->
 			# Then iterate over items and populate data and actions
 			rows = $('tbody', table)
 			for item in items
-				newRow = '<tr>'
-				#newRowNode = $('<tr></tr>')
+				rowNode = $('<tr/>')
 				for colInfo in colInfos
-					html = ''
+					cellNode = $('<td/>')
 					#TODO should perform HTML filtering of field data to avoid attacks
-					if colInfo.field then html = item[colInfo.field] || ''
-					#else if colInfo.handlers then html = colInfo.html
-					newRow += '<td>' + html + '</td>'
-				newRow += '</tr>'
-				newRowElement = $(newRow)
-				rowcb(item, newRowElement)
-				rows.append(newRowElement)
+					if colInfo.field
+						cellNode.append(item[colInfo.field] || '')
+					else if colInfo.handlers
+						cellNode.append(colInfo.html)
+						for handler in colInfo.handlers
+							handler.subscribe(collection, cellNode, item)
+					rowNode.append(cellNode)
+				rowcb?(item, rowNode)
+				rows.append(rowNode)
 
 
 		obj2form: (obj, form) ->
