@@ -11,7 +11,8 @@ define(['./nobj', './data'], (nobj, data) ->
 		afterLoad: ->
 			form = $(@query)
 			form.submit( =>
-				nobj.post(form, @collection).done( ->
+				nobj.post(form, @collection
+				).done( ->
 					alert('New item added')
 				).fail( ->
 					alert('Error while adding item')
@@ -25,7 +26,8 @@ define(['./nobj', './data'], (nobj, data) ->
 			form = $(@query)
 			nobj.obj2form(global.nobj.collections[@collection].current, form)
 			form.submit( =>
-				nobj.put(form, @collection).done( ->
+				nobj.put(form, @collection
+				).done( ->
 					alert('Item Saved')
 				).fail(->
 					alert('Error while updating item')
@@ -36,7 +38,8 @@ define(['./nobj', './data'], (nobj, data) ->
 	class ListingController
 		constructor: (@collection, @query) ->
 		afterLoad: ->
-			data.get(@collection).done( (result) =>
+			data.get(@collection
+			).done( (result) =>
 				nobj.fillTable(@collection, result.items, $(@query))
 			).fail( (err) ->
 				alert 'Error: ' + err

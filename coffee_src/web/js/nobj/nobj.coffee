@@ -1,9 +1,5 @@
 define(['./data'], (data) ->
 
-	global = @
-	actionHandlers = []
-
-
 	class EditActionHandler
 		actionMask: '$edit'
 		getHTML: (collection) -> '<a class="editLink" href="#' + collection + '/edit">Edit</a>'
@@ -19,16 +15,21 @@ define(['./data'], (data) ->
 			$('a.delLink', domNode).click( ->
 				data.delete(collection, item._id).done( (result) ->
 					alert('Item deleted: ' + result.result)
-					node = domNode.get(0)
-					while node.nodeName != 'TR'
-						node = node.parentElement
-					$(node).remove()
+					$(getParentNode(domNode.get(0), 'TR')).remove()
 				).fail( (err) ->
 					alert('Error: ' + err)
 				)
 				return false
 			)
 
+
+	global = @
+	actionHandlers = []
+
+	getParentNode = (node, parentNodeName) ->
+		while node && node.nodeName != parentNodeName
+			node = node.parentElement
+		return node
 
 	addActionHandler = (actionHandler) ->
 		actionHandlers.push(actionHandler)
@@ -39,8 +40,8 @@ define(['./data'], (data) ->
 
 	return {
 
-		fillTable: (collection, items, table, rowcb) ->
-			# First, process headers metadata, present in data-nobj-* attributes
+		# Processes table header metadata, present in data-nobj-* attributes
+		parseTableHeaders: (collection, table) ->
 			heads = $('thead tr th', table)
 			colInfos = []
 			for head, i in heads
@@ -54,20 +55,28 @@ define(['./data'], (data) ->
 						[replaced, handlers] = @processHandlers(collection, mask)
 						colInfos.push({ html: replaced, handlers: handlers })
 					else colInfos.push({})
-			# Then iterate over items and populate data and actions
+			return colInfos
+
+		# Creates a table row node by iterating the columns and populating data and actions
+		buildTableRow: (collection, item, colInfos) ->
+			rowNode = $('<tr/>')
+			for colInfo in colInfos
+				cellNode = $('<td/>')
+				#TODO should perform HTML filtering of field data to avoid attacks
+				if colInfo.field
+					cellNode.append(item[colInfo.field] || '')
+				else if colInfo.handlers
+					cellNode.append(colInfo.html)
+					for handler in colInfo.handlers
+						handler.subscribe(collection, cellNode, item)
+				rowNode.append(cellNode)
+			return rowNode
+
+		fillTable: (collection, items, table, rowcb) ->
+			colInfos = @parseTableHeaders(collection, table)
 			rows = $('tbody', table)
 			for item in items
-				rowNode = $('<tr/>')
-				for colInfo in colInfos
-					cellNode = $('<td/>')
-					#TODO should perform HTML filtering of field data to avoid attacks
-					if colInfo.field
-						cellNode.append(item[colInfo.field] || '')
-					else if colInfo.handlers
-						cellNode.append(colInfo.html)
-						for handler in colInfo.handlers
-							handler.subscribe(collection, cellNode, item)
-					rowNode.append(cellNode)
+				rowNode = @buildTableRow(collection, item, colInfos)
 				rowcb?(item, rowNode)
 				rows.append(rowNode)
 
@@ -85,6 +94,8 @@ define(['./data'], (data) ->
 			data.put(collection, putData)
 
 		addActionHandler: addActionHandler
+
+		getParentNode: getParentNode
 
 		processHandlers: (collection, mask) ->
 			handlers = []
