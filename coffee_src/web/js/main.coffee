@@ -11,8 +11,8 @@ require(['nobj/nav', 'nobj/controllers', 'users'], (nav, controllers, users) ->
 	controllers.addCollection('books')
 	controllers.addCollection('users')
 	userEditChain = new controllers.ChainController([
+		new users.UserEditController()
 		controllers.getController('users/edit')
-		new users.BookListController()
 	])
 	controllers.setController('users/edit', userEditChain)
 	#controllers.setController('users/edit',

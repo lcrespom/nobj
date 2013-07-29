@@ -11,7 +11,7 @@
     }
     controllers.addCollection('books');
     controllers.addCollection('users');
-    userEditChain = new controllers.ChainController([controllers.getController('users/edit'), new users.BookListController()]);
+    userEditChain = new controllers.ChainController([new users.UserEditController(), controllers.getController('users/edit')]);
     controllers.setController('users/edit', userEditChain);
     nav.getController = controllers.getController;
     nav.setNavigationArea('navArea', 'collections');

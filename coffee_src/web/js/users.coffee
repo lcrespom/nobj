@@ -38,7 +38,7 @@ define(['nobj/nobj', 'nobj/data'], (nobj, data) ->
 				return false
 			)
 
-	class BookListController
+	class UserEditController
 		constructor: (@collection, @query) ->
 		afterLoad: ->
 			# Prepare variables used by AddBookActionHandler
@@ -53,12 +53,15 @@ define(['nobj/nobj', 'nobj/data'], (nobj, data) ->
 			).fail( (err) ->
 				alert 'Error: ' + err
 			)
+			# Capture form submit in order to populate book list
+			$('#users_edit').submit( ->
+			)
 
 
 	nobj.addActionHandler(new AddBookActionHandler())
 	nobj.addActionHandler(new DelBookActionHandler())
 
 	return {
-		BookListController: BookListController
+		UserEditController: UserEditController
 	}
 )

@@ -52,7 +52,6 @@ doGet = (req, res, next, collection, parsedUrl, oid) ->
 
 doPost = (req, res, next, collection) ->
 	# Create new entry
-	delete req.body._id		#TODO this is temporary until client gets smarter
 	collection.insert(req.body, w: 1, (err, result) ->
 		respondJson(res, { err: err, result: result }))
 

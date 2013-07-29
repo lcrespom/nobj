@@ -80,7 +80,6 @@
   };
 
   doPost = function(req, res, next, collection) {
-    delete req.body._id;
     return collection.insert(req.body, {
       w: 1
     }, function(err, result) {

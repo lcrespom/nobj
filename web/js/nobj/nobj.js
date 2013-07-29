@@ -140,9 +140,7 @@
         return data.post(collection, form.serialize());
       },
       put: function(form, collection) {
-        var putData;
-        putData = form.serialize();
-        return data.put(collection, putData);
+        return data.put(collection, form.serialize());
       },
       addActionHandler: addActionHandler,
       getParentNode: getParentNode,

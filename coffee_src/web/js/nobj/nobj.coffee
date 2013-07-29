@@ -89,9 +89,7 @@ define(['./data'], (data) ->
 
 		post: (form, collection) -> data.post(collection, form.serialize())
 
-		put: (form, collection) ->
-			putData = form.serialize()
-			data.put(collection, putData)
+		put: (form, collection) -> data.put(collection, form.serialize())
 
 		addActionHandler: addActionHandler
 
