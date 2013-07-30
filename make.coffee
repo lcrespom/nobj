@@ -13,13 +13,16 @@ doCoffee = (ctrl) ->
 	)
 
 doBrowserify = (ctrl) ->
-	ctrl.success('Browserify OK')
+	exec(commands.browserify('clt/main.js', 'web/js/app.js'), (err, stdout, stderr) ->
+		if err then ctrl.fail(err)
+		ctrl.log(stdout + stderr) if stdout.length > 0 || stderr.length > 0
+		ctrl.success('Browserify OK')
+	)
 
-
-tasks =
 
 commands = {
 	coffee_compile: (src, dest) -> "coffee --compile --output #{dest} #{src}"
+	browserify: (main, app) -> "browserify #{main} -o #{app}"
 }
 
 

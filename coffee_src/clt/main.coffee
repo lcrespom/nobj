@@ -1,4 +1,7 @@
-require(['nobj/nav', 'nobj/controllers', 'users'], (nav, controllers, users) ->
+$( ->
+	nav = require('./nobj/nav')
+	controllers = require('./nobj/controllers')
+	users = require('./users')
 
 	# This is to avoid silly errors in IE when compatibility mode is disabled
 	if !window.console
@@ -21,5 +24,4 @@ require(['nobj/nav', 'nobj/controllers', 'users'], (nav, controllers, users) ->
 	# Navigate to the default page
 	nav.setNavigationArea('navArea', 'collections')
 	nav.loadDefaultView()
-
 )
