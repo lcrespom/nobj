@@ -17,7 +17,8 @@ userEditChain = new controllers.ChainController([
 	controllers.getController('users/edit')
 ])
 controllers.setController('users/edit', userEditChain)
-#controllers.setController('users/edit',
+
+# Set registered controllers to the navigation controller
 nav.getController = controllers.getController
 
 # Navigate to the default page
