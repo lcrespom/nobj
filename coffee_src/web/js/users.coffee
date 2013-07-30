@@ -55,6 +55,7 @@ define(['nobj/nobj', 'nobj/data'], (nobj, data) ->
 			)
 			# Capture form submit in order to populate book list
 			$('#users_edit').submit( ->
+				#TODO add hidden field with JSON of user.books
 			)
 
 
