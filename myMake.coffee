@@ -1,25 +1,29 @@
 taskInfo = null
 
 serialize = (taskList) ->
-	runTaskFromList = (i) ->
+	runTaskFromList = (ctrl, i) ->
 		task = taskList[i]
-		return if not task
+		if not task
+			ctrl.success("Task sequence #{taskNames} completed successfully", true)
+			return
 		runTask(task, ->
-			runTaskFromList(i+1)
+			runTaskFromList(ctrl, i+1)
 		)
+	taskNames = ('' + taskList).replace(',', '+')
 	return (ctrl) ->
-		ctrl.log("Running tasks #{(''+taskList).replace(',','+')} in sequence...")
-		runTaskFromList(0)
+		ctrl.log("Running tasks #{taskNames} in sequence")
+		runTaskFromList(ctrl, 0)
 
 taskControl = {
 	fail: (msg) ->
 		@failCB(msg)
 		throw(msg)
-	success: (msg) ->
+	success: (msg, nocb) ->
 		console.log(msg)
-		@successCB(msg)
-	log: (msg) -> console.log(msg)
+		@successCB(msg) unless nocb
+	log: (msg) -> console.log('  ' + msg)
 	warn: (msg) -> console.warn(msg)
+	start: (task) -> console.log("--- Running task '#{task}' ---")
 	failCB: (msg) ->
 	successCB: (msg) ->
 }
@@ -33,9 +37,8 @@ runTask = (task, successCB) ->
 	else if taskImpl.constructor != Function
 		taskControl.fail("Task '#{task}' is invalid")
 	if successCB then taskControl.successCB = successCB
-	taskControl.task = task
-	taskControl.log("Running task '#{task}'...")
-	taskImpl(taskControl, process.argv[3..])
+	taskControl.start(task)
+	taskImpl(taskControl, task, process.argv[3..])
 
 module.exports = (tasks) ->
 	taskInfo = tasks
