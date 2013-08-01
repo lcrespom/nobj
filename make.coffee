@@ -37,7 +37,6 @@ doCoffeeify = (ctrl) ->
 	)
 
 doRequirify = (ctrl) ->
-	requirify = (code) -> code	#TODO implement parsing
 	ctrl.log('Prepending .coffee suffix to requires')
 	files = glob.sync('coffee_src/clt/**/*.coffee')
 	for fileName in files
@@ -61,6 +60,19 @@ commands = {
 	coffeeify: (main, app) -> "browserify --transform coffeeify --debug #{main} -o #{app}"
 }
 
+
+#--------------- Internal ---------------
+
+appendCoffee = (line) ->
+	regex = /require\s*\(?\s*['|"]([^"']+)['|"]\s*\)?/
+	line + '# ;-)'
+
+requirify = (code) ->
+	lines = code.split('\n')
+	newLines = []
+	for line in lines
+		newLines.push(appendCoffee(line))
+	return newLines.join('\n')
 
 #--------------- Main ---------------
 
