@@ -9,7 +9,7 @@ serialize = (taskList) ->
 		runTask(task, ->
 			runTaskFromList(ctrl, i+1)
 		)
-	taskNames = ('' + taskList).replace(',', '+')
+	taskNames = ('' + taskList).replace(/,/g, '+')
 	return (ctrl) ->
 		ctrl.log("Running tasks #{taskNames} in sequence")
 		runTaskFromList(ctrl, 0)

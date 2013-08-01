@@ -15,24 +15,24 @@ make = require('./myMake')
 doCoffee = (ctrl) ->
 	ctrl.log('Compiling coffee files')
 	exec(commands.coffee_compile('coffee_src/', '.'), (err, stdout, stderr) ->
-		if err then ctrl.fail(err)
 		ctrl.log(stdout + stderr) if stdout.length > 0 || stderr.length > 0
+		if err then ctrl.fail(err)
 		ctrl.success('Coffe compile OK')
 	)
 
 doBrowserify = (ctrl) ->
 	ctrl.log('Joining modules using browserify, with source map')
 	exec(commands.browserify('clt/main.js', 'web/js/app.js'), (err, stdout, stderr) ->
-		if err then ctrl.fail(err)
 		ctrl.log(stdout + stderr) if stdout.length > 0 || stderr.length > 0
+		if err then ctrl.fail(err)
 		ctrl.success('Browserify OK')
 	)
 
 doCoffeeify = (ctrl) ->
 	ctrl.log('Joining modules using coffeeify, with source map')
-	exec(commands.coffeeify('coffee_src/clt/main.coffee', 'web/js/app.js'), (err, stdout, stderr) ->
-		if err then ctrl.fail(err)
+	exec(commands.coffeeify("coffee_src/clt/#{REQ_PREFIX}main.coffee", 'web/js/app.js'), (err, stdout, stderr) ->
 		ctrl.log(stdout + stderr) if stdout.length > 0 || stderr.length > 0
+		if err then ctrl.fail(err)
 		ctrl.success('Coffeeify OK')
 	)
 
@@ -40,15 +40,16 @@ doRequirify = (ctrl) ->
 	ctrl.log('Prepending .coffee suffix to requires')
 	files = glob.sync('coffee_src/clt/**/*.coffee')
 	for fileName in files
+		continue if path.basename(fileName).indexOf(REQ_PREFIX) == 0
 		code = fs.readFileSync(fileName, { encoding: 'utf8' })
-		reqName = path.dirname(fileName) + path.sep + '_requirify_' + path.basename(fileName)
+		reqName = path.dirname(fileName) + path.sep + REQ_PREFIX + path.basename(fileName)
 		err = fs.writeFileSync(reqName, requirify(code))
 		if (err) then ctrl.fail(err)
 	ctrl.success('Requirify OK')
 
 doDeleteRequirify = (ctrl) ->
 	ctrl.log('Deleting intermediate requirify files')
-	files = glob.sync('coffee_src/clt/**/_requirify_*.coffee')
+	files = glob.sync("coffee_src/clt/**/#{REQ_PREFIX}*.coffee")
 	for fileName in files
 		fs.unlinkSync(fileName)
 	ctrl.success('Delete requirify OK')
@@ -60,24 +61,19 @@ commands = {
 	coffeeify: (main, app) -> "browserify --transform coffeeify --debug #{main} -o #{app}"
 }
 
+REQ_PREFIX = '_req_'
+
 
 #--------------- Internal ---------------
 
 appendCoffee = (line) ->
-	regex = /require\s*\(?\s*['|"]([^"']+)['|"]\s*\)?/g
-	#'
-	pos = oldPos = 0
-	match = true
-	newLine = ''
-	while match
-		match = regex.exec(line)
-		if match
-			oldPos = pos
-			pos = line.indexOf(match[0], pos)
-			newLine += line.substring(oldPos, pos) + '.coffee'
-			pos += match[0].length
-	newLine += line.substring(pos, line.length)
-	return newLine
+	regex = /require\s*\(?\s*['|"]([^"']+)['|"]\s*\)?/g #'
+	return line.replace(regex, (match, module) ->
+		newModule = module
+		if not module.match(/^\..+(\.js|\.coffee)$/i)
+			newModule = path.dirname(module) + '/' + REQ_PREFIX + path.basename(module) + '.coffee'
+		match.replace(module, newModule)
+	)
 
 requirify = (code) ->
 	lines = code.split('\n')
