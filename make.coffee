@@ -70,9 +70,8 @@ appendCoffee = (line) ->
 	regex = /require\s*\(?\s*['|"]([^"']+)['|"]\s*\)?/g #'
 	return line.replace(regex, (match, module) ->
 		newModule = module
-		if module.indexOf('.') == 0
-			if not module.match(/\.js$|\.coffee$/i)
-				newModule = path.dirname(module) + '/' + REQ_PREFIX + path.basename(module) + '.coffee'
+		if module.indexOf('.') == 0 and not module.match(/\.js$|\.coffee$/i)
+			newModule = path.dirname(module) + '/' + REQ_PREFIX + path.basename(module) + '.coffee'
 		match.replace(module, newModule)
 	)
 
