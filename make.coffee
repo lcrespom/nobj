@@ -64,8 +64,20 @@ commands = {
 #--------------- Internal ---------------
 
 appendCoffee = (line) ->
-	regex = /require\s*\(?\s*['|"]([^"']+)['|"]\s*\)?/
-	line + '# ;-)'
+	regex = /require\s*\(?\s*['|"]([^"']+)['|"]\s*\)?/g
+	#'
+	pos = oldPos = 0
+	match = true
+	newLine = ''
+	while match
+		match = regex.exec(line)
+		if match
+			oldPos = pos
+			pos = line.indexOf(match[0], pos)
+			newLine += line.substring(oldPos, pos) + '.coffee'
+			pos += match[0].length
+	newLine += line.substring(pos, line.length)
+	return newLine
 
 requirify = (code) ->
 	lines = code.split('\n')
