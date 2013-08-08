@@ -14,7 +14,9 @@ make = require('./myMake')
 
 doCoffee = (ctrl) ->
 	ctrl.log('Compiling coffee files')
-	exec(commands.coffee_compile('coffee_src/', '.'), (err, stdout, stderr) ->
+	cmd = commands.coffee_compile('coffee_src/', '.')
+	ctrl.log('Running command: ' + cmd)
+	exec(cmd, (err, stdout, stderr) ->
 		ctrl.log(stdout + stderr) if stdout.length > 0 || stderr.length > 0
 		if err then ctrl.fail(err)
 		ctrl.success('Coffe compile OK')
@@ -22,7 +24,9 @@ doCoffee = (ctrl) ->
 
 doBrowserify = (ctrl) ->
 	ctrl.log('Joining modules using browserify, with source map')
-	exec(commands.browserify('clt/main.js', 'web/js/app.js'), (err, stdout, stderr) ->
+	cmd = commands.browserify('clt/main.js', 'web/js/app.js')
+	ctrl.log('Running command: ' + cmd)
+	exec(cmd, (err, stdout, stderr) ->
 		ctrl.log(stdout + stderr) if stdout.length > 0 || stderr.length > 0
 		if err then ctrl.fail(err)
 		ctrl.success('Browserify OK')
@@ -30,7 +34,9 @@ doBrowserify = (ctrl) ->
 
 doCoffeeify = (ctrl) ->
 	ctrl.log('Joining modules using coffeeify, with source map')
-	exec(commands.coffeeify("coffee_src/clt/#{REQ_PREFIX}main.coffee", 'web/js/app.js'), (err, stdout, stderr) ->
+	cmd = commands.coffeeify("coffee_src/clt/#{REQ_PREFIX}main.coffee", 'web/js/app.js')
+	ctrl.log('Running command: ' + cmd)
+	exec(cmd, (err, stdout, stderr) ->
 		ctrl.log(stdout + stderr) if stdout.length > 0 || stderr.length > 0
 		if err then ctrl.fail(err)
 		ctrl.success('Coffeeify OK')
@@ -69,10 +75,10 @@ REQ_PREFIX = '_req_'
 appendCoffee = (line) ->
 	regex = /require\s*\(?\s*['"]([^"']+)['"]\s*\)?/g #'
 	return line.replace(regex, (match, module) ->
-		newModule = module
 		if module.indexOf('.') == 0 and not module.match(/\.js$|\.coffee$/i)
-			newModule = path.dirname(module) + '/' + REQ_PREFIX + path.basename(module) + '.coffee'
-		match.replace(module, newModule)
+			return match.replace(module,
+				path.dirname(module) + '/' + REQ_PREFIX + path.basename(module) + '.coffee')
+		return match
 	)
 
 requirify = (code) ->
