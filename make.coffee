@@ -67,7 +67,7 @@ REQ_PREFIX = '_req_'
 #--------------- Internal ---------------
 
 appendCoffee = (line) ->
-	regex = /require\s*\(?\s*['|"]([^"']+)['|"]\s*\)?/g #'
+	regex = /require\s*\(?\s*['"]([^"']+)['"]\s*\)?/g #'
 	return line.replace(regex, (match, module) ->
 		newModule = module
 		if module.indexOf('.') == 0 and not module.match(/\.js$|\.coffee$/i)
